@@ -2,95 +2,17 @@
 <html>
 <head>
     <title>Perfect Tic Tac Toe</title>
-    <link rel="stylesheet" type="text/css" href="tictactoe/bootstrap/css/bootstrap.min.css">
-    <script type="text/javascript" src="tictactoe/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script type="text/javascript" src="js/jquery.js"></script>
     <style type="text/css">
-        * {
-            width: 100%;
-            margin: 0px;
-            padding: 0px;
-        }
 
-        #top {
-            margin: auto;
-            height: 101px;
-            width: 310px;
-            box-sizing: border-box;
-        }
-
-        #middle {
-            margin: auto;
-            height: 101px;
-            width: 310px;
-            box-sizing: border-box;
-        }
-
-        #bottom {
-            margin: auto;
-            height: 100px;
-            width: 310px;
-            box-sizing: border-box;
-        }
-
-        .box {
-            height: 100px;
-            width: 100px;
-            float: left;
-        }
-
-        .bottom-border {
-            border-bottom: 1px red solid;
-        }
-
-        .border-right {
-            border-right: 1px red solid;
-        }
-
-        #wrapper {
-            width: 80%;
-            margin: auto;
-        }
-
-        #tic-tac-toe {
-            margin-top: 100px;
-        }
-
-        #footer {
-            margin-top: 70px;
-            /*border: 1px red solid;*/
-            width: 100%;
-            height: 100px;
-        }
-
-        #footer-left {
-            width: 25%;
-            float: left;
-        }
-
-        #footer-middle {
-            width: 50%;
-            float: left;
-        }
-
-        #footer-right {
-            width: 25%;
-            float: left;
-        }
-
-        #footer-left > img {
-            width: 50%;
-            height: 100px;
-        }
-
-        #footer-right > img {
-            float: right;
-            width: 50%;
-            height: 100px;
-        }
     </style>
 </head>
 <body>
-<center><h3>I am perfect. But you can try to beat me :P</h3></center>
+<div class="text-center">
+    <h2>I am perfect. But you can try to beat me</h2>
+</div>
 <div id="wrapper">
     <div id="tic-tac-toe">
         <div id="top" class="bottom-border">
@@ -109,13 +31,38 @@
             <div class="box"></div>
         </div>
     </div>
-    <div id="footer">
-        <div id="footer-left"><img src="computer.png"></div>
-        <div id="footer-middle">
-            <center>Who will go first?
-                <center>
+    <!--<div id="footer">-->
+    <!--<div id="footer-left"><img src="images/computer.png"><br/>-->
+    <!--<div class="text-center">-->
+    <!--<h4>Me</h4>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div id="footer-middle">-->
+    <!--<div class="text-center">-->
+    <!--<h4>Who Will go first?</h4>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div id="footer-right"><img src="images/person.png"><br/>-->
+    <!--<div class="text-center">-->
+    <!--<h4>You</h4>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <div id="footer" class="row">
+        <div class="col-md-3"><img src="images/computer.png" class="img-circle img-responsive">
+            <div class="text-center">
+                <h4>Me</h4>
+            </div>
         </div>
-        <div id="footer-right"><img src="person.png"></div>
+        <div class="col-md-6">
+            <div class="text-center">
+                <h4>Who Will go first?</h4>
+            </div>
+        </div>
+        <div class="col-md-3"><img src="images/person.png" class="img-circle img-responsive">
+            <div class="text-center">
+                <h4>You</h4>
+            </div></div>
     </div>
 </div>
 <script type="text/javascript" src="nextMove.js"></script>
@@ -142,7 +89,7 @@
 
     $('.box').mouseenter(function () {
         if ($(this).find('img').length == 0) {
-            $(this).prepend($('<img>', {id: 'theImg', src: turn, permanent: 'false'}));
+            $(this).prepend($('<img>', {id: 'theImg', src: "images/" + turn, permanent: 'false'}));
         }
     });
     $('.box').mouseleave(function () {
@@ -152,7 +99,7 @@
     });
     $('.box').click(function () {
         if ($(this).find('img').length == 0 && started) {
-            $(this).prepend($('<img>', {id: 'theImg', src: turn, permanent: 'true'}));
+            $(this).prepend($('<img>', {id: 'theImg', src: "images/" + turn, permanent: 'true'}));
             console.log(board());
             if (turn == 'o.png') {
                 console.log(nextMove('X', board()));
