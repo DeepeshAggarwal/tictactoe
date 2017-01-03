@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Perfect Tic Tac Toe</title>
+	<link rel="stylesheet" type="text/css" href="tictactoe/bootstrap/css/bootstrap.min.css">
+	<script type="text/javascript" src="tictactoe/jquery.js"></script>
+	<style type="text/css">
+	*{
+		width: 100%;
+		margin: 0px;
+		padding: 0px;
+	}
+	#top{
+		margin: auto;
+		height: 101px;
+		width: 310px;
+		box-sizing:border-box;
+	}
+	#middle{
+		margin: auto;
+		height: 101px;
+		width: 310px;	
+		box-sizing:border-box;
+	}
+	#bottom{
+		margin: auto;
+		height: 100px;
+		width: 310px;	
+		box-sizing:border-box;
+	}
+	.box{
+		height: 100px;
+		width: 100px;
+		float:left;
+	}
+	.bottom-border{
+		border-bottom: 1px red solid;
+	}
+	.border-right{
+		border-right: 1px red solid;
+	}
+	#wrapper{
+		width: 80%;
+		margin:auto;
+	}
+	#tic-tac-toe{
+		margin-top: 100px;
+	}
+	#footer{
+		margin-top: 70px;
+		/*border: 1px red solid;*/
+		width: 100%;
+		height: 100px;
+	}
+	#footer-left{
+		width: 25%;
+		float:left;
+	}
+	#footer-middle{
+		width: 50%;
+		float:left;
+	}
+	#footer-right{
+		width: 25%;	
+		float:left;
+	}
+	#footer-left > img{
+		width: 50%;
+		height: 100px;
+	}
+	#footer-right > img{
+		float:right;
+		width: 50%;
+		height: 100px;
+	}
+	</style>
+</head>
+<body>
+<center><h3>I am perfect. But you can try to beat me :P</h3></center>
+<div id="wrapper">
+	<div id="tic-tac-toe">
+		<div id="top" class="bottom-border">
+			<div class="box border-right"></div>
+			<div class="box border-right"></div>
+			<div class="box"></div>
+		</div>
+		<div id="middle" class="bottom-border">
+			<div class="box border-right" style="clear:both"></div>
+			<div class="box border-right"></div>
+			<div class="box"></div>
+		</div>
+		<div id="bottom">
+			<div class="box border-right" style="clear:both"></div>
+			<div class="box border-right"></div>
+			<div class="box"></div>
+		</div>
+	</div>
+	<div id="footer">
+		<div id="footer-left"><img src="computer.png"></div>
+		<div id="footer-middle"><center>Who will go first?<center></div>
+		<div id="footer-right"><img src="person.png"></div>
+	</div>
+</div>
+<script type="text/javascript" src="nextMove.js"></script>
+<script type="text/javascript">
+	var started = false;
+	var turn = 'x.png';
+
+	var board = function(){
+		var boxes = $('.box');
+		var boardPosition = new Array();
+		for (var i = 0; i < boxes.length; i++) {
+			if ($(boxes[i]).find('img').length > 0) {
+				if ($(boxes[i]).find('img').attr('src') === 'x.png') {
+					boardPosition.push('X');
+				}else{
+					boardPosition.push('O');
+				}	
+			}else{
+				boardPosition.push('_');
+			}
+		}
+		return boardPosition;
+	}
+
+	$('.box').mouseenter(function(){
+		if($(this).find('img').length==0){
+			$(this).prepend($('<img>',{id:'theImg',src:turn, permanent:'false'}));
+		}
+	});
+	$('.box').mouseleave(function(){
+		if($(this).find('img').length > 0 && $(this).find('img').attr('permanent') === 'false'){
+			$(this).children().remove('img');
+		}
+	});
+	$('.box').click(function(){
+		if($(this).find('img').length==0 && started){
+			$(this).prepend($('<img>',{id:'theImg',src:turn, permanent:'true'}));
+			console.log(board());
+			if (turn == 'o.png') {
+				console.log(nextMove('X',board()));	
+			} else{
+				console.log(nextMove('O',board()));
+			}
+		}else if($(this).find('img').length > 0 && $(this).find('img').attr('permanent') === 'false' && started){
+			$(this).find('img').attr('permanent', 'true')
+			console.log(board());
+			if (turn == 'o.png') {
+				console.log(nextMove('X',board()));	
+			} else{
+				console.log(nextMove('O',board()));
+			}
+		}
+
+		
+
+	});
+	$('#footer-left > img').click(function(){
+		if (!started) {
+			started = true;
+			turn = 'o.png';	
+			$('#footer-left > img').css('opacity', '0');
+			$('#footer-right > img').css('opacity', '0');
+			$('#footer-middle').css('opacity', '0');
+			// call	api for board mext move
+		}
+	});
+	$('#footer-right > img').click(function(){
+		if (!started) {
+			started = true;
+			turn = 'x.png';	
+			$('#footer-left > img').css('opacity', '0');
+			$('#footer-right > img').css('opacity', '0');	
+			$('#footer-middle').css('opacity', '0');
+		};
+	});
+	
+</script>
+</body>
+
+</html>
