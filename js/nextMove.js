@@ -1,4 +1,4 @@
-CHOICE = (-1, -1)
+var CHOICE = [-1, -1];
 function gameOver(player, board, depth){
     if( board[0] == board[3] && board[3] == board[6] && board[0] != '_'){
         if (board[0] == player)
@@ -57,9 +57,9 @@ function gameOver(player, board, depth){
     }
 }
 function nextMoveHelper(player, board, depth, row, column, isPlayerTurn){
-    scores = new Array();
-    moves = new Array();
-    console.log(board)
+    var scores = new Array();
+    var moves = new Array();
+    // console.log(board)
     if(row >= 0 && column >= 0){
         board[3*row + column] = player
         if(!isPlayerTurn && player == 'X')
@@ -75,7 +75,7 @@ function nextMoveHelper(player, board, depth, row, column, isPlayerTurn){
         for (var j = 2; j >= 0; j--) 
             if(board[3*i + j] == '_'){
                 scores.push(nextMoveHelper(player, JSON.parse(JSON.stringify(board)), depth + 1, i, j, !isPlayerTurn));
-                moves.push((i, j));
+                moves.push([i, j]);
             }
 
     //print scores, moves
@@ -83,7 +83,8 @@ function nextMoveHelper(player, board, depth, row, column, isPlayerTurn){
         max_score = Math.max.apply(null, scores);//max(scores)
         max_index = scores.indexOf(max_score)
         CHOICE = moves[max_index]
-        //print "choice", CHOICE
+        //print "choice" , CHOICE
+        // console.log(CHOICE);
         return max_score
     } else {
         min_score = Math.min.apply(null, scores);
@@ -94,7 +95,7 @@ function nextMoveHelper(player, board, depth, row, column, isPlayerTurn){
     }
     console.log(CHOICE);
 }
-function nextMove(player,board){
+function nextMove(player,board, isPlayerTurn){
     nextMoveHelper(player, board, 0, -1, -1, false)
     console.log(CHOICE);
     return CHOICE

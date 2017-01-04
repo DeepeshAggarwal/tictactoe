@@ -15,43 +15,26 @@
 </div>
 <div id="wrapper">
     <div id="tic-tac-toe">
-        <div id="top" class="bottom-border">
-            <div class="box border-right"></div>
-            <div class="box border-right"></div>
-            <div class="box"></div>
+        <div id="top" class="bottom-border 1">
+            <div class="box border-right 0"></div>
+            <div class="box border-right 1"></div>
+            <div class="box 2"></div>
         </div>
-        <div id="middle" class="bottom-border">
-            <div class="box border-right" style="clear:both"></div>
-            <div class="box border-right"></div>
-            <div class="box"></div>
+        <div id="middle" class="bottom-border 2">
+            <div class="box border-right 0" style="clear:both"></div>
+            <div class="box border-right 1"></div>
+            <div class="box 2"></div>
         </div>
-        <div id="bottom">
-            <div class="box border-right" style="clear:both"></div>
-            <div class="box border-right"></div>
-            <div class="box"></div>
+        <div id="bottom" class="3">
+            <div class="box border-right 0" style="clear:both"></div>
+            <div class="box border-right 1"></div>
+            <div class="box 2"></div>
         </div>
     </div>
-    <!--<div id="footer">-->
-    <!--<div id="footer-left"><img src="images/computer.png"><br/>-->
-    <!--<div class="text-center">-->
-    <!--<h4>Me</h4>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div id="footer-middle">-->
-    <!--<div class="text-center">-->
-    <!--<h4>Who Will go first?</h4>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div id="footer-right"><img src="images/person.png"><br/>-->
-    <!--<div class="text-center">-->
-    <!--<h4>You</h4>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <div id="footer" class="row">
-        <div class="col-md-3"><img src="images/computer.png" class="img-circle img-responsive">
+    <div class="row" style="margin-top:80px;">
+        <div id="you" class="col-md-3"><img src="images/computer.png" id="footer">
             <div class="text-center">
-                <h4>Me</h4>
+                <h4>You</h4>
             </div>
         </div>
         <div class="col-md-6">
@@ -59,13 +42,13 @@
                 <h4>Who Will go first?</h4>
             </div>
         </div>
-        <div class="col-md-3"><img src="images/person.png" class="img-circle img-responsive">
+        <div id="me" class="col-md-3"><img src="images/person.png" id="footer">
             <div class="text-center">
-                <h4>You</h4>
+                <h4>Me</h4>
             </div></div>
     </div>
 </div>
-<script type="text/javascript" src="nextMove.js"></script>
+<script type="text/javascript" src="js/nextMove.js"></script>
 <script type="text/javascript">
     var started = false;
     var turn = 'x.png';
@@ -75,7 +58,7 @@
         var boardPosition = new Array();
         for (var i = 0; i < boxes.length; i++) {
             if ($(boxes[i]).find('img').length > 0) {
-                if ($(boxes[i]).find('img').attr('src') === 'x.png') {
+                if ($(boxes[i]).find('img').attr('src') === 'images/x.png') {
                     boardPosition.push('X');
                 } else {
                     boardPosition.push('O');
@@ -85,6 +68,16 @@
             }
         }
         return boardPosition;
+    }
+
+    function makeNewMove(choice, image) {
+        if(choice[0] == 0){
+            $('#top').children('.' + choice[1]).prepend($('<img>', {id: 'theImg', src: image, permanent: 'true'}));
+        }else if(choice[0] == 1){
+            $('#middle').children('.' + choice[1]).prepend($('<img>', {id: 'theImg', src: image, permanent: 'true'}));
+        }else {
+            $('#bottom').children('.' + choice[1]).prepend($('<img>', {id: 'theImg', src: image, permanent: 'true'}));
+        }
     }
 
     $('.box').mouseenter(function () {
@@ -98,45 +91,43 @@
         }
     });
     $('.box').click(function () {
-        if ($(this).find('img').length == 0 && started) {
+        var score = gameOver('X', board(), 0);
+        if(score !== undefined && score !== 0) {
+            alert("Game is over");
+            return;
+        }
+        if (($(this).find('img').length == 0 || $(this).find('img').attr('permanent') === 'false') && started) {
+            $(this).children().remove('img');
             $(this).prepend($('<img>', {id: 'theImg', src: "images/" + turn, permanent: 'true'}));
-            console.log(board());
+            var boardPosition = board()
+            console.log(boardPosition);
+            var choice = [];
             if (turn == 'o.png') {
-                console.log(nextMove('X', board()));
+                choice = (nextMove('X', boardPosition));
+                makeNewMove(choice, "images/x.png");
             } else {
-                console.log(nextMove('O', board()));
+                choice = (nextMove('O', boardPosition));
+                makeNewMove(choice, "images/o.png");
             }
-        } else if ($(this).find('img').length > 0 && $(this).find('img').attr('permanent') === 'false' && started) {
-            $(this).find('img').attr('permanent', 'true')
-            console.log(board());
-            if (turn == 'o.png') {
-                console.log(nextMove('X', board()));
-            } else {
-                console.log(nextMove('O', board()));
-            }
+
+
         }
 
 
     });
-    $('#footer-left > img').click(function () {
+    $('#you').click(function () {
         if (!started) {
             started = true;
             turn = 'o.png';
-            $('#footer-left > img').css('opacity', '0');
-            $('#footer-right > img').css('opacity', '0');
-            $('#footer-middle').css('opacity', '0');
-            // call	api for board mext move
+            $('.row').css('opacity', '0');
         }
     });
-    $('#footer-right > img').click(function () {
+    $('#me').click(function () {
         if (!started) {
             started = true;
             turn = 'x.png';
-            $('#footer-left > img').css('opacity', '0');
-            $('#footer-right > img').css('opacity', '0');
-            $('#footer-middle').css('opacity', '0');
-        }
-        ;
+            $('.row').css('opacity', '0');
+        };
     });
 
 </script>
