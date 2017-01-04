@@ -95,8 +95,8 @@ function nextMoveHelper(player, board, depth, row, column, isPlayerTurn){
     }
     console.log(CHOICE);
 }
-function nextMove(player,board, isPlayerTurn){
-    nextMoveHelper(player, board, 0, -1, -1, false)
+function nextMove(player,board){
+    nextMoveHelper(player, board, 0, -1, -1, false);
     console.log(CHOICE);
     return CHOICE
 }

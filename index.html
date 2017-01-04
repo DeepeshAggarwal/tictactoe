@@ -31,8 +31,8 @@
             <div class="box 2"></div>
         </div>
     </div>
-    <div class="row" style="margin-top:80px;">
-        <div id="you" class="col-md-3"><img src="images/computer.png" id="footer">
+    <div class="row player" style="margin-top:80px;">
+        <div id="you" class="col-md-3"><img src="images/computer.png" class="footer">
             <div class="text-center">
                 <h4>You</h4>
             </div>
@@ -42,16 +42,27 @@
                 <h4>Who Will go first?</h4>
             </div>
         </div>
-        <div id="me" class="col-md-3"><img src="images/person.png" id="footer">
+        <div id="me" class="col-md-3"><img src="images/person.png" class="footer">
             <div class="text-center">
                 <h4>Me</h4>
-            </div></div>
+            </div>
+        </div>
+    </div>
+    <div class="row restart" style="margin-top:100px;cursor: pointer">
+        <div class="text-center">
+            <h4>Restart The Game?</h4>
+        </div>
     </div>
 </div>
 <script type="text/javascript" src="js/nextMove.js"></script>
 <script type="text/javascript">
     var started = false;
     var turn = 'x.png';
+    var isPlayerTurn = false;
+
+    $(document).ready(function () {
+        $('.restart').hide();
+    })
 
     var board = function () {
         var boxes = $('.box');
@@ -71,11 +82,11 @@
     }
 
     function makeNewMove(choice, image) {
-        if(choice[0] == 0){
+        if (choice[0] == 0) {
             $('#top').children('.' + choice[1]).prepend($('<img>', {id: 'theImg', src: image, permanent: 'true'}));
-        }else if(choice[0] == 1){
+        } else if (choice[0] == 1) {
             $('#middle').children('.' + choice[1]).prepend($('<img>', {id: 'theImg', src: image, permanent: 'true'}));
-        }else {
+        } else {
             $('#bottom').children('.' + choice[1]).prepend($('<img>', {id: 'theImg', src: image, permanent: 'true'}));
         }
     }
@@ -85,15 +96,19 @@
             $(this).prepend($('<img>', {id: 'theImg', src: "images/" + turn, permanent: 'false'}));
         }
     });
+
     $('.box').mouseleave(function () {
         if ($(this).find('img').length > 0 && $(this).find('img').attr('permanent') === 'false') {
             $(this).children().remove('img');
         }
     });
+
     $('.box').click(function () {
         var score = gameOver('X', board(), 0);
-        if(score !== undefined && score !== 0) {
+        console.log(score);
+        if (score !== undefined) {
             alert("Game is over");
+            $('.restart').show();
             return;
         }
         if (($(this).find('img').length == 0 || $(this).find('img').attr('permanent') === 'false') && started) {
@@ -109,26 +124,34 @@
                 choice = (nextMove('O', boardPosition));
                 makeNewMove(choice, "images/o.png");
             }
-
-
         }
-
-
     });
+
     $('#you').click(function () {
         if (!started) {
             started = true;
             turn = 'o.png';
-            $('.row').css('opacity', '0');
+            $('.player').hide();
+            var boardPosition = board();
+            choice = (nextMove('X', boardPosition));
+            makeNewMove(choice, "images/x.png");
         }
     });
     $('#me').click(function () {
         if (!started) {
             started = true;
             turn = 'x.png';
-            $('.row').css('opacity', '0');
-        };
+            $('.player').hide();
+        }
     });
+
+    $('.restart').click(function () {
+        started = false;
+        $('.box').children().remove('img');
+        $('.restart').hide();
+        $('.player').show();
+
+    })
 
 </script>
 </body>
