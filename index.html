@@ -32,17 +32,17 @@
         </div>
     </div>
     <div class="row player" style="margin-top:80px;">
-        <div id="you" class="col-md-3"><img src="images/computer.png" class="footer">
+        <div id="you" class="col-md-2"><img src="images/computer.png" class="footer">
             <div class="text-center">
                 <h4>You</h4>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-8">
             <div class="text-center">
                 <h4>Who Will go first?</h4>
             </div>
         </div>
-        <div id="me" class="col-md-3"><img src="images/person.png" class="footer">
+        <div id="me" class="col-md-2"><img src="images/person.png" class="footer">
             <div class="text-center">
                 <h4>Me</h4>
             </div>
@@ -50,6 +50,7 @@
     </div>
     <div class="row restart" style="margin-top:100px;cursor: pointer">
         <div class="text-center">
+            <h4>Game is over</h4>
             <h4>Restart The Game?</h4>
         </div>
     </div>
@@ -57,8 +58,7 @@
 <script type="text/javascript" src="js/nextMove.js"></script>
 <script type="text/javascript">
     var started = false;
-    var turn = 'x.png';
-    var isPlayerTurn = false;
+    var turn = 'o.png';
 
     $(document).ready(function () {
         $('.restart').hide();
@@ -104,10 +104,7 @@
     });
 
     $('.box').click(function () {
-        var score = gameOver('X', board(), 0);
-        console.log(score);
-        if (score !== undefined) {
-            alert("Game is over");
+        if (isGameOver(board())) {
             $('.restart').show();
             return;
         }
@@ -116,31 +113,27 @@
             $(this).prepend($('<img>', {id: 'theImg', src: "images/" + turn, permanent: 'true'}));
             var boardPosition = board()
             console.log(boardPosition);
-            var choice = [];
-            if (turn == 'o.png') {
-                choice = (nextMove('X', boardPosition));
-                makeNewMove(choice, "images/x.png");
-            } else {
-                choice = (nextMove('O', boardPosition));
-                makeNewMove(choice, "images/o.png");
-            }
+            var choice = (nextMove('X', boardPosition));
+            makeNewMove(choice, "images/x.png");
+        }
+        if (isGameOver(board())) {
+            $('.restart').show();
+            return;
         }
     });
 
     $('#you').click(function () {
         if (!started) {
             started = true;
-            turn = 'o.png';
             $('.player').hide();
             var boardPosition = board();
-            choice = (nextMove('X', boardPosition));
+            var choice = (nextMove('X', boardPosition));
             makeNewMove(choice, "images/x.png");
         }
     });
     $('#me').click(function () {
         if (!started) {
             started = true;
-            turn = 'x.png';
             $('.player').hide();
         }
     });
